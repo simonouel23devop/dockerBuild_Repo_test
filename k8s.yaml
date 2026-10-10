@@ -1,47 +1,63 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-world
+  name: python-app
   labels:
-    app: hello-world
+    app: python-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hello-world
+      app: python-app
   template:
     metadata:
       labels:
-        app: hello-world
+        app: python-app
     spec:
       containers:
-        - name: hello-world
-          image: simmusx12/test-repo:hello-world
+        - name: python-app
+          image: simmusx12/test-repo:python-app
           imagePullPolicy: Always
-          command: ["/bin/sh", "-c", "/usr/local/bin/hello-world; exec sleep infinity"]
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             runAsNonRoot: true
+            runAsUser: 10001
+            runAsGroup: 10001
           resources:
             requests:
               cpu: 10m
-              memory: 16Mi
+              memory: 32Mi
             limits:
               cpu: 100m
-              memory: 64Mi
+              memory: 128Mi
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello-world
+  name: python-app
   labels:
-    app: hello-world
+    app: python-app
 spec:
   selector:
-    app: hello-world
+    app: python-app
   type: ClusterIP
   ports:
     - name: http
-      port: 80
-      targetPort: 80
+      port: 8080
+      targetPort: http

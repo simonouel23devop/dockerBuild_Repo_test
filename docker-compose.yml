@@ -1,8 +1,10 @@
 services:
-  hello-world:
+  python-app:
     build:
       context: .
       dockerfile: Dockerfile
-    image: cpp-examples:hello-world
+    image: simmusx12/test-repo:python-app
     init: true
-    restart: "no"
+    ports:
+      - "8080:8080"
+    restart: unless-stopped

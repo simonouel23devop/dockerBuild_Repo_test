@@ -1,18 +1,22 @@
 # Build stage
-FROM gcc:12-bookworm AS build
+FROM python:3.12-slim-bookworm AS build
 
-WORKDIR /src
-COPY Main_Folder/Hello_world/Hello_world.cpp ./Hello_world.cpp
-
-RUN mkdir -p /out && g++ -std=c++20 -O2 -Wall -Wextra -Wpedantic \
-    -o /out/hello-world \
-    Hello_world.cpp
+WORKDIR /build
+COPY Main_Folder/main.py ./main.py
 
 # Runtime stage
-FROM debian:bookworm-slim AS runtime
+FROM python:3.12-slim-bookworm AS runtime
 
-RUN groupadd --system --gid 10001 app && useradd --system --uid 10001 --gid 10001 --no-create-home app
-COPY --from=build /out/hello-world /usr/local/bin/hello-world
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+RUN groupadd --system --gid 10001 app && \
+    useradd --system --uid 10001 --gid 10001 --no-create-home app
+
+WORKDIR /app
+COPY --from=build --chown=10001:10001 /build/main.py ./main.py
 
 USER 10001:10001
-ENTRYPOINT ["/usr/local/bin/hello-world"]
+EXPOSE 8080
+
+ENTRYPOINT ["python", "/app/main.py"]
