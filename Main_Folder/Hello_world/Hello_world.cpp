@@ -1,5 +1,5 @@
 // Un simple programme en C++... 
-git commit - sauvegarde
+// git commit - sauvegarde
 #include <iostream>
 #include <string>
 
@@ -10,6 +10,6 @@ int main()//Démarrage du programme principal...
     cout << "Hello World!";
 
 
-return 0
+return 0;
 }
  

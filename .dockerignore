@@ -1,0 +1,26 @@
+# Git and IDE metadata
+.git
+.gitignore
+.gitattributes
+.idea
+.vscode
+
+# Visual Studio generated files
+**/x64
+**/Debug
+**/Release
+**/*.suo
+**/*.user
+**/*.userosscache
+**/*.sln
+**/*.vcxproj
+**/*.vcxproj.filters
+
+# Build and temporary files
+*.obj
+*.pdb
+*.ilk
+*.exe
+*.dll
+*.out
+*.tmp

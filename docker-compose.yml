@@ -1,0 +1,8 @@
+services:
+  hello-world:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cpp-examples:hello-world
+    init: true
+    restart: "no"
