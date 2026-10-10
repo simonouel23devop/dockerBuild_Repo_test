@@ -8,7 +8,7 @@ class Handler(BaseHTTPRequestHandler):
             payload = {"status": "ok"}
             self.send_response(200)
         elif self.path == "/":
-            payload = {"message": "Hello from Main_Folder Python app"}
+            payload = {"message": "App server docker"}
             self.send_response(200)
         else:
             payload = {"error": "not found"}
